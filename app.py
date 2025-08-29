@@ -33,6 +33,10 @@ def profile():
 def profileOther(userid):
     return render_template('otherProfile.html')
 
+@app.route('/sets/<setid>')
+def sets(setid):
+    return render_template('sets.html')
+
 # Add Set Route
 @app.route('/addset', methods=["GET", "POST"])
 def addset():
@@ -92,7 +96,7 @@ def registerUsername():
             session["registerAvatar"] = avatar
             return jsonify({"success": True, "username": username, "avatar": avatar})
     else:
-        return render_template('register/username.html')
+        return render_template('auth/register/username.html')
     
 # Register Password
 @app.route('/register/password', methods=["GET", "POST"])
@@ -128,7 +132,7 @@ def registerPassword():
            return jsonify({"error": "Username already taken."}), 409
     else:
         if session["registerUsername"]:
-            return render_template('register/password.html')
+            return render_template('auth/register/password.html')
         else:
             return redirect(url_for('registerUsername'))
         
@@ -145,7 +149,7 @@ def loginUsername():
         session["loginUsername"] = username
         return jsonify({"success": True, "username": username})
     else:
-        return render_template('login/username.html')
+        return render_template('auth/login/username.html')
     
 # Login Password
 @app.route('/login/password', methods=["GET", "POST"])
@@ -178,7 +182,7 @@ def loginPassword():
            return jsonify({"error": "Username already taken."}), 409
     else:
         if session["loginUsername"]:
-            return render_template('login/password.html')
+            return render_template('auth/login/password.html')
         else:
             return redirect(url_for('loginUsername'))
 
@@ -194,6 +198,7 @@ def getUploads():
     page = request.args.get('page', default=1, type=int)
     perPage = request.args.get('per_page', default=20, type=int)
     author = request.args.get('author', default=None, type=int)
+    setid = request.args.get('set', default=None, type=str)
 
     # Validate Parameters
     if limit < 1:
@@ -205,20 +210,23 @@ def getUploads():
     if sort not in ['newest', 'oldest', 'random']:
         sort = 'newest'
 
-    totalQuery = "SELECT COUNT (*) FROM uploads"
-    totalParams = []
+    # Where Clause
+    conditions = []
+    params = []
     if author is not None:
-        totalQuery += " WHERE author = ?"
-        totalParams.append(author)
-    total = db.execute(totalQuery, totalParams).fetchone()[0]
+        conditions.append("author = ?")
+        params.append(author)
+    if setid is not None:
+        conditions.append("setid = ?")
+        params.append(setid)
+    whereClause = " WHERE " + " AND ".join(conditions) if conditions else ""
+
+    # Total count query
+    totalQuery = f"SELECT COUNT(*) FROM uploads{whereClause}"
+    total = db.execute(totalQuery, params).fetchone()[0]
 
     # Build Query
-    query = "SELECT * FROM uploads"
-    params = []
-
-    if author is not None:
-        query += " WHERE author = ?"
-        params.append(author)
+    query = f"SELECT * FROM uploads{whereClause}"
 
     if sort == 'random':
         query += " ORDER BY RANDOM()"
