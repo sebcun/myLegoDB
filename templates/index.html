@@ -30,7 +30,7 @@
 
     <script>
       let setsMap = {};
-      fetch("/static/sets.csv")
+      fetch("{{ url_for('static', filename='sets.csv')}}")
         .then((res) => res.text())
         .then((csv) => {
           const lines = csv.split("\n");
@@ -81,7 +81,6 @@
             authorA.href = "/";
             authorA.className = "card-link text-muted";
 
-            console.log(upload.author);
             fetch(`/api/user?id=${upload.author}`, {
               method: "GET",
               headers: {
@@ -101,12 +100,10 @@
                   avatarImg.style.marginRight = "5px";
                   avatarImg.style.objectFit = "cover";
 
-                  // Create the username text node
                   const usernameText = document.createTextNode(
                     `By ${data.user.username}`
                   );
 
-                  // Append image first (left), then text
                   authorA.appendChild(avatarImg);
                   authorA.appendChild(usernameText);
                 } else {

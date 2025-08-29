@@ -33,9 +33,13 @@ def profile():
 def profileOther(userid):
     return render_template('otherProfile.html')
 
-@app.route('/sets/<setid>')
-def sets(setid):
+@app.route('/sets')
+def sets():
     return render_template('sets.html')
+
+@app.route('/sets/<setid>')
+def setsView(setid):
+    return render_template('setsView.html')
 
 # Add Set Route
 @app.route('/addset', methods=["GET", "POST"])

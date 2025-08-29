@@ -33,7 +33,7 @@
       let setsMap = {};
       let userID = null;
 
-      fetch("/static/sets.csv")
+      fetch("{{ url_for('static', filename='sets.csv')}}")
         .then((res) => res.text())
         .then((csv) => {
           const lines = csv.split("\n");
