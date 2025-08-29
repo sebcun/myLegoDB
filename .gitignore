@@ -182,4 +182,5 @@ cython_debug/
 
 
 # Database
+.database.db
 database.db
