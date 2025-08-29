@@ -28,96 +28,39 @@
       crossorigin="anonymous"
     ></script>
 
-    <script>
-      let setsMap = {};
-      fetch("{{ url_for('static', filename='sets.csv')}}")
-        .then((res) => res.text())
-        .then((csv) => {
-          const lines = csv.split("\n");
-          for (let i = 1; i < lines.length; i++) {
-            const cols = lines[i].split(",");
-            if (cols.length > 1) {
-              setsMap[cols[0]] = cols[1];
-            }
-          }
-        });
+    <script src="{{ url_for('static', filename='js/cards.js') }}"></script>
 
-      fetch("/api/getuploads", {
+    <script>
+      fetch(`/api/getuploads`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
       })
         .then((res) => res.json())
-        .then((data) => {
+        .then(async (data) => {
           const row = document.getElementById("cards-row");
           row.innerHTML = "";
 
           for (let upload of data.uploads) {
-            const col = document.createElement("div");
-            col.className = "col-lg-3 col-md-4 col-sm-6 col-12";
-
-            const card = document.createElement("div");
-            card.className = "card mb-3";
-            card.style.width = "18rem";
-
-            const img = document.createElement("img");
-            img.src = `/static/uploads/${upload.image}`;
-            img.alt = "Set Image";
-            img.className = "card-img-top";
-            img.style.height = "130px";
-            img.style.objectFit = "cover";
-            card.appendChild(img);
-
-            const cardBody = document.createElement("div");
-            cardBody.className = "card-body p-2";
-
-            const h5 = document.createElement("h5");
-            h5.className = "card-title mb-1";
-            h5.textContent = setsMap[upload.setid] || upload.setid;
-            cardBody.appendChild(h5);
-
-            const authorA = document.createElement("a");
-            authorA.href = "/";
-            authorA.className = "card-link text-muted";
-
-            fetch(`/api/user?id=${upload.author}`, {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            })
-              .then((res) => res.json())
-              .then((data) => {
-                if (data.success) {
-                  const avatarImg = document.createElement("img");
-                  avatarImg.src = `/static/images/avatars/${
-                    data.user.avatar || 0
-                  }.png`;
-                  avatarImg.alt = "Avatar";
-                  avatarImg.style.width = "20px";
-                  avatarImg.style.height = "20px";
-                  avatarImg.style.marginRight = "5px";
-                  avatarImg.style.objectFit = "cover";
-
-                  const usernameText = document.createTextNode(
-                    `By ${data.user.username}`
-                  );
-
-                  authorA.appendChild(avatarImg);
-                  authorA.appendChild(usernameText);
-                } else {
-                  authorA.textContent = "By ?";
+            try {
+              const userResponse = await fetch(
+                `/api/user?id=${upload.author}`,
+                {
+                  method: "GET",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
                 }
-              });
+              );
+              const userData = await userResponse.json();
+              const author = userData.success ? userData.user : null;
 
-            cardBody.appendChild(authorA);
-
-            card.appendChild(cardBody);
-
-            col.appendChild(card);
-
-            row.appendChild(col);
+              const card = await createCard(upload, author);
+              row.appendChild(card);
+            } catch (err) {
+              console.error("Author fetch or card creation error:", err);
+            }
           }
         })
         .catch((err) => console.error("Fetch error:", err));
