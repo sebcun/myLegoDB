@@ -97,7 +97,7 @@
 
     {# Cards #}
     <div class="container mt-5">
-      <h1>Recently Posted Sets</h1>
+      <h1>Profile</h1>
       <div class="row" id="cards-row"></div>
     </div>
 
@@ -109,6 +109,8 @@
 
     <script>
       let setsMap = {};
+      let userID = null;
+
       fetch("/static/sets.csv")
         .then((res) => res.text())
         .then((csv) => {
@@ -121,7 +123,20 @@
           }
         });
 
-      fetch("/api/getuploads", {
+      fetch("/api/user", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            userID = data.user.id;
+          }
+        });
+
+      fetch(`/api/getuploads?author=${userID}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -155,45 +170,6 @@
             h5.className = "card-title mb-1";
             h5.textContent = setsMap[upload.setid] || upload.setid;
             cardBody.appendChild(h5);
-
-            const authorA = document.createElement("a");
-            authorA.href = "/";
-            authorA.className = "card-link text-muted";
-
-            console.log(upload.author);
-            fetch(`/api/user?id=${upload.author}`, {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            })
-              .then((res) => res.json())
-              .then((data) => {
-                if (data.success) {
-                  const avatarImg = document.createElement("img");
-                  avatarImg.src = `/static/images/avatars/${
-                    data.user.avatar || 0
-                  }.png`;
-                  avatarImg.alt = "Avatar";
-                  avatarImg.style.width = "20px";
-                  avatarImg.style.height = "20px";
-                  avatarImg.style.marginRight = "5px";
-                  avatarImg.style.objectFit = "cover";
-
-                  // Create the username text node
-                  const usernameText = document.createTextNode(
-                    `By ${data.user.username}`
-                  );
-
-                  // Append image first (left), then text
-                  authorA.appendChild(avatarImg);
-                  authorA.appendChild(usernameText);
-                } else {
-                  authorA.textContent = "By ?";
-                }
-              });
-
-            cardBody.appendChild(authorA);
 
             card.appendChild(cardBody);
 

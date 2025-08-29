@@ -19,6 +19,13 @@ def home():
         return render_template('indexAuth.html')
     return render_template('index.html')
 
+# Profile Route
+@app.route('/profile')
+def profile():
+    if "userID" in session:
+        return render_template('profile.html')
+    return redirect(url_for('loginUsername'))
+
 # Add Set Route
 @app.route('/addset', methods=["GET", "POST"])
 def addset():
@@ -179,7 +186,7 @@ def getUploads():
     sort = request.args.get('sort', default='newest', type=str)
     page = request.args.get('page', default=1, type=int)
     perPage = request.args.get('per_page', default=20, type=int)
-    author = request.args.get('author', defualt=None, type=int)
+    author = request.args.get('author', default=None, type=int)
 
     # Validate Parameters
     if limit < 1:
