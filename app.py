@@ -28,7 +28,6 @@ def addset():
     if request.method == "POST":
         set_num = request.form.get('set_num')
         file = request.files.get('image')
-        print(request.files)
 
         if not set_num:
             flash("No set selected.", "error")
@@ -42,7 +41,7 @@ def addset():
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
         db = getDb()
-        db.execute("INSERT INTO uploads (author, set_number, image) VALUES (?, ?, ?)", (session['userID'], set_num, filename))
+        db.execute("INSERT INTO uploads (author, set, image) VALUES (?, ?, ?)", (session['userID'], set_num, filename))
         db.commit()
 
         flash("Set added successfully!", "success")
