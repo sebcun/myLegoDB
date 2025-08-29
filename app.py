@@ -26,6 +26,10 @@ def profile():
         return render_template('profile.html')
     return redirect(url_for('loginUsername'))
 
+@app.route('/profile/<userid>')
+def profileOther(userid):
+    return render_template('otherProfile.html')
+
 # Add Set Route
 @app.route('/addset', methods=["GET", "POST"])
 def addset():
