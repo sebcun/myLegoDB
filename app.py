@@ -12,11 +12,14 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 # Register teardown to close DB on server close
 app.teardown_appcontext(closeDb)
 
+# Register Context Processor
+@app.context_processor
+def injectUser():
+    return {'loggedIn': 'userID' in session}
+
 # Index Route
 @app.route('/')
 def home():
-    if "userID" in session:
-        return render_template('indexAuth.html')
     return render_template('index.html')
 
 # Profile Route
