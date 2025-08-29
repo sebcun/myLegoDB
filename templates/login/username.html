@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>myLegoDB | Login</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles/username.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="minifigure">
+        <!-- Expression Arrows -->
+        <button class="arrow left expression-arrow" data-target="expression">
+          ←
+        </button>
+        <button class="arrow right expression-arrow" data-target="expression">
+          →
+        </button>
+
+        <div class="head">
+          <div class="faces-wrap">
+            <div class="faces">
+              <div class="face classic">
+                <div class="eye right"></div>
+                <div class="eye left"></div>
+                <div class="mouth"></div>
+              </div>
+
+              <div class="face smile">
+                <div class="eye right">
+                  <div class="brow"></div>
+                </div>
+                <div class="eye left">
+                  <div class="brow"></div>
+                </div>
+                <div class="mouth"></div>
+              </div>
+
+              <div class="face large-smile">
+                <div class="eye right">
+                  <div class="brow"></div>
+                </div>
+                <div class="eye left">
+                  <div class="brow"></div>
+                </div>
+                <div class="mouth"></div>
+              </div>
+
+              <div class="face worried">
+                <div class="eye right">
+                  <div class="brow"></div>
+                </div>
+                <div class="eye left">
+                  <div class="brow"></div>
+                </div>
+                <div class="mouth"></div>
+              </div>
+
+              <div class="face frown">
+                <div class="eye right">
+                  <div class="brow"></div>
+                </div>
+                <div class="eye left">
+                  <div class="brow"></div>
+                </div>
+                <div class="mouth"></div>
+              </div>
+
+              <div class="face surprised">
+                <div class="eye right">
+                  <div class="brow"></div>
+                </div>
+                <div class="eye left">
+                  <div class="brow"></div>
+                </div>
+                <div class="mouth"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upper Body Arrows -->
+        <button class="arrow left upper-arrow" data-target="upper-color">
+          ←
+        </button>
+        <button class="arrow right upper-arrow" data-target="upper-color">
+          →
+        </button>
+
+        <div class="upper-body">
+          <div class="torso"></div>
+          <div class="arm right">
+            <div class="hand right"></div>
+          </div>
+          <div class="arm left">
+            <div class="hand left"></div>
+          </div>
+        </div>
+
+        <!-- Lower Body Arrows -->
+        <button class="arrow left lower-arrow" data-target="lower-color">
+          ←
+        </button>
+        <button class="arrow right lower-arrow" data-target="lower-color">
+          →
+        </button>
+
+        <div class="lower-body">
+          <div class="waist"></div>
+          <div class="crotch"></div>
+          <div class="leg right"></div>
+          <div class="leg left"></div>
+        </div>
+      </div>
+
+      <!-- Randomize Button -->
+      <button class="button randomize">Submit</button>
+      {# <button class="button submit">Submit</button> #}
+    </div>
+
+    <!-- Main JS -->
+    <script
+      type="module"
+      src="{{ url_for('static', filename='js/login/username.js') }}"
+    ></script>
+  </body>
+</html>
