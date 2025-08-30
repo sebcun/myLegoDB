@@ -68,3 +68,48 @@ python app.py
 ```
 
 The application will be available at [http://localhost:5000](http://localhost:5000)
+
+## API Endpoints
+
+This application provides several API endpoints available for you to use. All endpoints return JSON responses.
+
+### [/api/uploads](http://localhost:5000/api/uploads)
+
+Retrieves a list of uploads with optional filtering and pagination.
+
+#### Query Parameters
+
+- `limit` (int, default: 20): Maximum number of uploads to return. This is only used when `sort` is set to 'random'.
+- `sort` (str, default: 'newest'): Sort order - 'newest', 'oldest', or 'random'.
+- `page` (int, default: 1): Page number for pagination.
+- `per_page` (int, default: 20): Number of uploads per page.
+- `author` (int, optional): Filter by user ID.
+- `set` (str, optional): Filter by set ID.
+- `following` (bool, default: false): If true, only show uploads from the authenticated users user follows.
+
+#### Example Usage
+
+```
+GET /api/uploads?limit=10&sort=random
+```
+
+#### Response
+
+```json
+{
+  "uploads": [
+    {
+      "id": 1,
+      "author": "username",
+      "setid": "10251-1",
+      "image": "path/to/image.jpg",
+      "created_at": "2025-08-30T12:00:00",
+      "likes": 5,
+      "liked": true
+    }
+  ],
+  "total": 20,
+  "page": 1,
+  "per_page": 20
+}
+```
