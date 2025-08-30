@@ -21,6 +21,10 @@ This project was created for the [Hackclub](https://hackclub.com/) YSWS, [Authly
 
 ## Demo
 
+<video src="https://github.com/sebcun/myLegoDB/raw/refs/heads/main/demo.mp4" controls width="640" height="360">
+  Your browser does not support the video tag.
+</video>
+
 ### You can also view a live version of the demo [here](https://mylegodb.sebcun.com).
 
 ## Stack
