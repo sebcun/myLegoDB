@@ -31,7 +31,32 @@
           autocomplete="off"
         />
       </div>
-      <div class="row" id="cards-row"></div>
+      <div class="row" id="loading-row">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+          <div class="card">
+            <svg
+              class="bd-placeholder-img card-img-top"
+              width="100%"
+              height="130"
+              xmlns="http://www.w3.org/2000/svg"
+              role="img"
+              aria-label="Placeholder"
+              preserveAspectRatio="xMidYMid slice"
+              focusable="false"
+            >
+              <title>Loading...</title>
+              <rect width="100%" height="100%" fill="#e9ecef"></rect>
+            </svg>
+
+            <div class="card-body p-2">
+              <h5 class="card-title mb-1 placeholder-glow">
+                <span class="placeholder col-8"></span>
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row d-none" id="cards-row"></div>
     </div>
 
     <script
@@ -53,6 +78,8 @@
           const card = await createCard(upload, null);
           row.appendChild(card);
         }
+        document.getElementById("cards-row").classList.remove("d-none");
+        document.getElementById("loading-row").classList.add("d-none");
       }
 
       document
