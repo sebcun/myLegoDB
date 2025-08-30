@@ -1,6 +1,9 @@
 {% extends "base.html" %}{% block content %}
 <div class="container mt-5">
-  <h1 class="text-primary"><span id="profileUsername">Loading...</span></h1>
+  <h1 class="text-primary">
+    <span id="profileUsername" class="fw-bold">Loading...</span>
+    <span class="text-secondary">Posted Sets</span>
+  </h1>
   <div class="mb-3">
     <label for="setSearch" class="form-label text-secondary"
       >Search Sets (By ID or Name)</label
@@ -95,7 +98,7 @@
           userID = data.user.id;
           document.getElementById(
             "profileUsername"
-          ).textContent = `${data.user.username}'s Profile`;
+          ).textContent = `${data.user.username}'s`;
           fetch(`/api/uploads?author=${userID}`, {
             method: "GET",
             headers: {
