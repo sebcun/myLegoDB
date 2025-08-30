@@ -21,7 +21,7 @@ This project was created for the [Hackclub](https://hackclub.com/) YSWS, [Authly
 
 ### You can view a video demo of the login and register system [here](https://streamable.com/wpan2w).
 
-### You can also view a live version of the demo [here](https://mylegodb.sebcun.com).
+### You can also view a live version of the demo [here](https://lego.sebcun.com).
 
 ## Stack
 
