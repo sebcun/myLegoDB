@@ -19,9 +19,7 @@ This project was created for the [Hackclub](https://hackclub.com/) YSWS, [Authly
 
 ## Demo
 
-<video src="https://cdn-cf-east.streamable.com/video/mp4/wpan2w.mp4?Expires=1756809600&Signature=eZoa1cOEZCPkN0p4iHb4syXChMCi1PR-lysIQMishPZK9UBu7YsmPzevTBlLOfbXhDTuxryOSUOFSb58CvgSd2nr2OZZ6jzjf4fd0flr9INP0UpRxOq6Nyk8J~Imv0HBJX50jLiQxRi1Ztxc1WsokeuGJm6Ql1UcJ3TNAB2JsMUxZB3IEyOlDCRtdguzuzR-IUOdC5GgyGaNW7x7nVgDHMMZcAc0NOwibxK0uCTOKgKVDEx8izgsWCrexsHn2R5PGDh9CKfkDUrFFOyc3XHrXrNSbMUDJ8AI~IEQc0-m7zjrkHBfGI1SzR0Mjfh~T7pA-XXJRhEmLMN-3Cg86uNp-Q__&Key-Pair-Id=APKAIEYUVEN4EVB2OKEQ" controls width="640" height="360">
-  Your browser does not support the video tag.
-</video>
+### You can view a video demo of the login and register system [here](https://streamable.com/wpan2w).
 
 ### You can also view a live version of the demo [here](https://mylegodb.sebcun.com).
 
