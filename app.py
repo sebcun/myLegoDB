@@ -24,8 +24,13 @@ def pageNotFound(e):
 
 # Index Route
 @app.route('/')
-def home():
+def index():
     return render_template('index.html')
+
+# Index Route
+@app.route('/home')
+def home():
+    return render_template('home.html')
 
 # Profile Route
 @app.route('/profile')

@@ -17,89 +17,12 @@
   </head>
   <body>
     {% include 'navbar.html' %}
-    <div class="container mt-5">
-      <h1>Recently Posted Sets</h1>
-      <div class="row" id="loading-row">
-        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
-          <div class="card">
-            <svg
-              class="bd-placeholder-img card-img-top"
-              width="100%"
-              height="130"
-              xmlns="http://www.w3.org/2000/svg"
-              role="img"
-              aria-label="Placeholder"
-              preserveAspectRatio="xMidYMid slice"
-              focusable="false"
-            >
-              <title>Loading...</title>
-              <rect width="100%" height="100%" fill="#e9ecef"></rect>
-            </svg>
-
-            <div class="card-body p-2">
-              <h5 class="card-title mb-1 placeholder-glow">
-                <span class="placeholder col-8"></span>
-              </h5>
-              <p
-                class="card-text placeholder-glow mb-0 d-flex align-items-center small"
-              >
-                <span
-                  class="placeholder rounded-circle me-2"
-                  style="width: 20px; height: 20px"
-                ></span>
-                <span class="placeholder col-4"></span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row d-none" id="cards-row"></div>
-    </div>
+    <div class="container mt-5"></div>
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
-
-    <script src="{{ url_for('static', filename='js/cards.js') }}"></script>
-
-    <script>
-      fetch(`/api/getuploads`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((res) => res.json())
-        .then(async (data) => {
-          const row = document.getElementById("cards-row");
-          row.innerHTML = "";
-
-          for (let upload of data.uploads) {
-            try {
-              const userResponse = await fetch(
-                `/api/user?id=${upload.author}`,
-                {
-                  method: "GET",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                }
-              );
-              const userData = await userResponse.json();
-              const author = userData.success ? userData.user : null;
-
-              const card = await createCard(upload, author);
-              row.appendChild(card);
-            } catch (err) {
-              console.error("Author fetch or card creation error:", err);
-            }
-          }
-          document.getElementById("cards-row").classList.remove("d-none");
-          document.getElementById("loading-row").classList.add("d-none");
-        })
-        .catch((err) => console.error("Fetch error:", err));
-    </script>
   </body>
 </html>
