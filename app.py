@@ -176,9 +176,7 @@ def displayname():
 # Login Username
 @app.route('/login/username', methods=["GET", "POST"])
 def loginUsername():
-    print('a')
     if "userID" in session:
-        print('a')
         return redirect(url_for('browse'))
     if request.method == "POST":
         username = request.json.get("username")
@@ -405,13 +403,12 @@ def handleLike(uploadid):
 @app.route('/api/favouriteset/<setid>', methods=["POST", "GET"])
 def handleFavouriteSet(setid):
     db = getDb()
+
     if 'userID' not in session:
         favouriteCount = db.execute('SELECT COUNT(*) FROM favouritesets WHERE setid = ?', (setid,)).fetchone()[0]
         return jsonify({'favourited': False, 'favourite_count': favouriteCount}), 200
     
     userid = session['userID']
-
-    
 
     if request.method == 'POST':
         existingFavourite = db.execute('SELECT id FROM favouritesets WHERE userid = ? and setid = ?', (userid, setid)).fetchone()
@@ -435,15 +432,43 @@ def handleFavouriteSet(setid):
         favouriteCount = db.execute('SELECT COUNT(*) FROM favouritesets WHERE setid = ?', (setid,)).fetchone()[0]
         return jsonify({'favourited': favourited, 'favourite_count': favouriteCount}), 200
     
+@app.route('/api/follow/<followedid>', methods=["POST", "GET"])
+def handleFollow(followedid):
+    db = getDb()
 
+    if 'userID' not in session:
+        followCount = db.execute('SELECT COUNT(*) FROM followers WHERE followedid = ?', (followedid,)).fetchone()[0]
+        return jsonify({'following': False, 'follow_count': followCount}), 200
+    
+    userid = session['userID']
 
-
+    if request.method == 'POST':
+        existingFollow = db.execute('SELECT id FROM followers WHERE userid = ? and followedid = ?', (userid, followedid)).fetchone()
+        if existingFollow:
+            db.execute('DELETE FROM followers WHERE id = ?', (existingFollow['id'],))
+            db.commit()
+            following = False
+        else:
+            db.execute('INSERT INTO followers (userid, followedid) VALUES (?, ?)', (userid, followedid))
+            db.commit()
+            following = True
+        
+        followCount = db.execute('SELECT COUNT(*) FROM followers WHERE followedid = ?', (followedid,)).fetchone()[0]
+        return jsonify({'success': True, 'following': following, 'follow_count': followCount}), 200
+    else:
+        existingFollow = db.execute('SELECT id FROM followers WHERE userid = ? and followedid = ?', (userid, followedid)).fetchone()
+        if existingFollow:
+            following = True
+        else:
+            following=False
+        followCount = db.execute('SELECT COUNT(*) FROM followers WHERE followedid = ?', (followedid,)).fetchone()[0]
+        return jsonify({'following': following, 'follow_count': followCount}), 200
+    
 @app.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('index'))
         
-
 if __name__ == '__main__':
     initDb(app)
     app.run(debug=True, host='0.0.0.0')

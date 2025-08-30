@@ -21,4 +21,5 @@ def initDb(app):
         db.execute("""CREATE TABLE IF NOT EXISTS uploads (id INTEGER PRIMARY KEY AUTOINCREMENT, author TEXT NOT NULL, setid TEXT NOT NULL, image TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)""")
         db.execute("""CREATE TABLE IF NOT EXISTS likes (id INTEGER PRIMARY KEY AUTOINCREMENT, userid INTEGER NOT NULL, uploadid INTEGER NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (userid) REFERENCES users (id), FOREIGN KEY (uploadid) REFERENCES uploads (id), UNIQUE(userid, uploadid))""")
         db.execute("""CREATE TABLE IF NOT EXISTS favouritesets (id INTEGER PRIMARY KEY AUTOINCREMENT, userid INTEGER NOT NULL, setid TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, UNIQUE(userid, setid))""")
+        db.execute("""CREATE TABLE IF NOT EXISTS followers (id INTEGER PRIMARY KEY AUTOINCREMENT, userid INTEGER NOT NULL, followedid INTEGER NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (userid) REFERENCES users (id), FOREIGN KEY (followedid) REFERENCES users (id), UNIQUE(userid, followedid))""")
         db.commit()

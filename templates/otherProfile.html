@@ -1,9 +1,15 @@
 {% extends "base.html" %}{% block content %}
 <div class="container mt-5">
-  <h1 class="text-primary">
-    <span id="profileUsername" class="fw-bold">Loading...</span>
-    <span class="text-secondary">Collection</span>
-  </h1>
+  <div class="d-flex justify-content-between align-items-center">
+    <h1 class="text-primary m-0">
+      <span id="profileUsername" class="fw-bold">Loading...</span>
+      <span class="text-secondary">Collection</span>
+    </h1>
+
+    <button class="btn btn-outline-primary" id="followBtn" disabled>
+      <i class="bi bi-bell-fill"></i> 0
+    </button>
+  </div>
   <div class="mb-3">
     <label for="setSearch" class="form-label text-secondary"
       >Search Sets (By ID or Name)</label
@@ -126,5 +132,66 @@
         }
       });
   }
+
+  const followBtn = document.getElementById("followBtn");
+  if (!userid) {
+    window.location.href = "/notfound";
+  } else {
+    fetch(`/api/follow/${userid}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then(async (data) => {
+        followBtn.innerHTML = `<i class="bi bi-bell-fill"></i> ${data.follow_count}`;
+        if (!!(data.following && data.following != null)) {
+          followBtn.classList.add("btn-primary");
+          followBtn.classList.remove("btn-outline-primary");
+        } else {
+          followBtn.classList.remove("btn-primary");
+          followBtn.classList.add("btn-outline-primary");
+        }
+      })
+      .catch((err) => console.error("Fetch error:", err));
+  }
+
+  followBtn.addEventListener("click", async () => {
+    try {
+      const response = await fetch(`/api/follow/${userid}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      if (data.success) {
+        const isFollowing = !!(data.following && data.following != null);
+        followBtn.innerHTML = `<i class="bi bi-bell-fill"></i>
+ ${data.follow_count}`;
+        if (isFollowing) {
+          followBtn.classList.add("btn-primary");
+          followBtn.classList.remove("btn-outline-primary");
+        } else {
+          followBtn.classList.remove("btn-primary");
+          followBtn.classList.add("btn-outline-primary");
+        }
+      }
+    } catch (error) {
+      console.error("error toggling favourite:", error);
+    }
+  });
+
+  fetch(`/api/user`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => res.json())
+    .then(async (userData) => {
+      if (userData.success) {
+        followBtn.disabled = false;
+      }
+    });
 </script>
 {% endblock %}
