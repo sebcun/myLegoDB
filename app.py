@@ -236,6 +236,7 @@ def getUploads():
     perPage = request.args.get('per_page', default=20, type=int)
     author = request.args.get('author', default=None, type=int)
     setid = request.args.get('set', default=None, type=str)
+    following = request.args.get('following', default=False, type=bool)
 
     # Validate Parameters
     if limit < 1:
@@ -247,6 +248,10 @@ def getUploads():
     if sort not in ['newest', 'oldest', 'random']:
         sort = 'newest'
 
+    userid = session.get('userID')
+    if following == True and not userid:
+        return jsonify({"error": "Must be logged in to filter by following."}), 401
+
     # Where Clause
     conditions = []
     params = []
@@ -256,6 +261,9 @@ def getUploads():
     if setid is not None:
         conditions.append("setid = ?")
         params.append(setid)
+    if following == True and userid:
+        conditions.append("author IN (SELECT followedid FROM followers WHERE userid = ?)")
+        params.append(userid)
     whereClause = " WHERE " + " AND ".join(conditions) if conditions else ""
 
     # Total count query
@@ -307,7 +315,8 @@ def getUploads():
         "per_page": perPage if sort != 'random' else None,
         "limit": limit,
         "sort": sort,
-        "author": author
+        "author": author,
+        "following": following
     }), 200
 
 @app.route('/api/user')
