@@ -64,7 +64,7 @@ async function createCard(upload, author) {
        alt="Avatar" 
        class="avatar rounded-circle me-2" 
        style="width:20px; height:20px;">
-  By @${upload.author}
+  By @${author.display}
 `;
 
     link.appendChild(info);

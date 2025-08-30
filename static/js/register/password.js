@@ -201,7 +201,7 @@ class BuildYourPassword {
         .then((res) => res.json())
         .then((data) => {
           if (data.success) {
-            window.location.href = "/";
+            window.location.href = "/register/displayname";
           }
           if (data.error) {
             if (data.error === "No username has been set.") {

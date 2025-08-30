@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify, send_from_directory
 from database import getDb, closeDb, initDb
-import json, os, time
+import json, os, time, re
 from werkzeug.utils import secure_filename 
 
 # Init App
@@ -25,6 +25,8 @@ def pageNotFound(e):
 # Index Route
 @app.route('/')
 def index():
+    if "userID" in session:
+        return redirect(url_for('browse'))
     return render_template('index.html')
 
 # Index Route
@@ -55,7 +57,7 @@ def setsView(setid):
 @app.route('/addset', methods=["GET", "POST"])
 def addset():
     if not "userID" in session:
-        return redirect(url_for("home"))
+        return redirect(url_for("index"))
     
     if request.method == "POST":
         set_num = request.form.get('set_num')
@@ -77,7 +79,7 @@ def addset():
         db.commit()
 
         flash("Set added successfully!", "success")
-        return redirect(url_for('home'))
+        return redirect(url_for('browse'))
     else:
 
         return render_template('addset.html')
@@ -90,7 +92,7 @@ def uploadedFile(filename):
 @app.route('/register/username', methods=["GET", "POST"])
 def registerUsername():
     if "userID" in session:
-        return redirect(url_for('home'))
+        return redirect(url_for('browse'))
     
     if request.method == "POST":
         username = request.json.get("username")
@@ -116,7 +118,7 @@ def registerUsername():
 @app.route('/register/password', methods=["GET", "POST"])
 def registerPassword():
     if "userID" in session:
-        return redirect(url_for('home'))
+        return redirect(url_for('browse'))
     if request.method == "POST":
         password = request.json.get('password')
         if not password:
@@ -150,11 +152,34 @@ def registerPassword():
         else:
             return redirect(url_for('registerUsername'))
         
+# Register Displayname
+@app.route('/register/displayname', methods=["GET", "POST"])
+def displayname():
+    if "userID" not in session:
+        return redirect(url_for('loginUsername'))
+    
+    if request.method == "POST":
+        displayname = request.form.get('displayname')
+
+        if not displayname or not re.match(r'^[a-zA-Z0-9]{1,20}$', displayname):
+            flash('error', 'error')
+            return redirect(url_for('displayname'))
+        
+        db = getDb()
+        db.execute("UPDATE users SET display = ? WHERE id = ?", (displayname, session['userID']))
+        db.commit()
+        
+        return redirect(url_for('browse'))
+    return render_template('auth/displayname.html')
+
+
 # Login Username
 @app.route('/login/username', methods=["GET", "POST"])
 def loginUsername():
+    print('a')
     if "userID" in session:
-        return redirect(url_for('home'))
+        print('a')
+        return redirect(url_for('browse'))
     if request.method == "POST":
         username = request.json.get("username")
         if not username:
@@ -169,7 +194,7 @@ def loginUsername():
 @app.route('/login/password', methods=["GET", "POST"])
 def loginPassword():
     if "userID" in session:
-        return redirect(url_for('home'))
+        return redirect(url_for('browse'))
     if request.method == "POST":
         password = request.json.get('password')
         if not password:
@@ -291,7 +316,7 @@ def getUser():
     if userID is None and not username:
         if "userID" not in session:
             return jsonify({"error": "User not found."}), 401
-        user = db.execute("SELECT id, username, avatar FROM users WHERE id = ?", (session["userID"],)).fetchone()
+        user = db.execute("SELECT id, username, avatar, display FROM users WHERE id = ?", (session["userID"],)).fetchone()
         if not user:
             session.clear()
             return jsonify({"error": "User not found."}), 404
@@ -299,14 +324,14 @@ def getUser():
     
     # Search by ID
     if userID is not None:
-        user = db.execute("SELECT id, username, avatar FROM users WHERE id = ?", (userID,)).fetchone()
+        user = db.execute("SELECT id, username, avatar, display FROM users WHERE id = ?", (userID,)).fetchone()
         if not user:
             return jsonify({"error": "User not found."}), 404
         return jsonify({"success": True, "user": dict(user)}), 200
     
     # Search by Username
     if username:
-        user = db.execute("SELECT id, username, avatar FROM users WHERE username = ?", (username,)).fetchone()
+        user = db.execute("SELECT id, username, avatar, display FROM users WHERE username = ?", (username,)).fetchone()
         if not user:
             return jsonify({"error": "User not found."}), 404
         return jsonify({"success": True, "user": dict(user)}), 200
@@ -339,7 +364,7 @@ def getSets():
 @app.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('home'))
+    return redirect(url_for('index'))
         
 
 if __name__ == '__main__':

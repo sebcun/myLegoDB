@@ -98,7 +98,7 @@
           userID = data.user.id;
           document.getElementById(
             "profileUsername"
-          ).textContent = `${data.user.username}'s`;
+          ).textContent = `${data.user.display}'s`;
           fetch(`/api/uploads?author=${userID}`, {
             method: "GET",
             headers: {
