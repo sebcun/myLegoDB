@@ -402,6 +402,39 @@ def handleLike(uploadid):
         likeCount = db.execute('SELECT COUNT(*) FROM likes WHERE uploadid = ?', (uploadid,)).fetchone()[0]
         return jsonify({'liked': liked, 'like_count': likeCount}), 200
     
+@app.route('/api/favouriteset/<setid>', methods=["POST", "GET"])
+def handleFavouriteSet(setid):
+    db = getDb()
+    if 'userID' not in session:
+        favouriteCount = db.execute('SELECT COUNT(*) FROM favouritesets WHERE setid = ?', (setid,)).fetchone()[0]
+        return jsonify({'favourited': False, 'favourite_count': favouriteCount}), 200
+    
+    userid = session['userID']
+
+    
+
+    if request.method == 'POST':
+        existingFavourite = db.execute('SELECT id FROM favouritesets WHERE userid = ? and setid = ?', (userid, setid)).fetchone()
+        if existingFavourite:
+            db.execute('DELETE FROM favouritesets WHERE id = ?', (existingFavourite['id'],))
+            db.commit()
+            favourited = False
+        else:
+            db.execute('INSERT INTO favouritesets (userid, setid) VALUES (?, ?)', (userid, setid))
+            db.commit()
+            favourited = True
+        
+        favouriteCount = db.execute('SELECT COUNT(*) FROM favouritesets WHERE setid = ?', (setid,)).fetchone()[0]
+        return jsonify({'success': True, 'favourited': favourited, 'favourite_count': favouriteCount}), 200
+    else:
+        existingFavourite = db.execute('SELECT id FROM favouritesets WHERE userid = ? and setid = ?', (userid, setid)).fetchone()
+        if existingFavourite:
+            favourited = True
+        else:
+            favourited=False
+        favouriteCount = db.execute('SELECT COUNT(*) FROM favouritesets WHERE setid = ?', (setid,)).fetchone()[0]
+        return jsonify({'favourited': favourited, 'favourite_count': favouriteCount}), 200
+    
 
 
 

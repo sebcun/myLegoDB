@@ -1,9 +1,16 @@
 {% extends "base.html" %}{% block content %}
 <div class="container mt-5">
-  <h1 class="text-primary">
-    <span id="setName" class="fw-bold">Loading...</span>
-    <span class="text-secondary">Posted Sets</span>
-  </h1>
+  <div class="d-flex justify-content-between align-items-center">
+    <h1 class="text-primary m-0">
+      <span id="setName" class="fw-bold">Loading...</span>
+      <span class="text-secondary">Uploaded Sets</span>
+    </h1>
+
+    <button class="btn btn-outline-warning" id="favouriteBtn" disabled>
+      <i class="bi bi-star-fill"></i> 0
+    </button>
+  </div>
+
   <div class="row" id="loading-row">
     <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
       <div class="card">
@@ -102,5 +109,67 @@
       })
       .catch((err) => console.error("Fetch error:", err));
   }
+
+  const favouriteBtn = document.getElementById("favouriteBtn");
+  if (!setid) {
+    window.location.href = "/notfound";
+  } else {
+    fetch(`/api/favouriteset/${setid}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then(async (data) => {
+        favouriteBtn.innerHTML = `<i class="bi bi-star-fill"></i> ${data.favourite_count}`;
+        if (!!(data.favourited && data.favourited != null)) {
+          favouriteBtn.classList.add("btn-warning");
+          favouriteBtn.classList.remove("btn-outline-warning");
+        } else {
+          favouriteBtn.classList.remove("btn-warning");
+          favouriteBtn.classList.add("btn-outline-warning");
+        }
+      })
+      .catch((err) => console.error("Fetch error:", err));
+  }
+
+  favouriteBtn.addEventListener("click", async () => {
+    try {
+      const response = await fetch(`/api/favouriteset/${setid}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      if (data.success) {
+        const isFavourited = !!(data.favourited && data.favourited != null);
+        favouriteBtn.innerHTML = `<i class="bi bi-star-fill"></i>
+ ${data.favourite_count}`;
+        if (isFavourited) {
+          favouriteBtn.classList.add("btn-warning");
+          favouriteBtn.classList.remove("btn-outline-warning");
+        } else {
+          favouriteBtn.classList.remove("btn-warning");
+          favouriteBtn.classList.add("btn-outline-warning");
+        }
+      }
+    } catch (error) {
+      console.error("error toggling favourite:", error);
+    }
+  });
+
+  fetch(`/api/user`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => res.json())
+    .then(async (userData) => {
+      if (userData.success) {
+        favouriteBtn.disabled = false;
+      }
+    });
 </script>
+<script></script>
 {% endblock %}
