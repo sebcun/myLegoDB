@@ -7,7 +7,7 @@
         height="40"
         aria-hidden="true"
         src="{{ url_for('static', filename='Logo.png') }}"
-      /><span class="fs-4">myLegoDB</span></a
+      /><span class="fs-4 text-primary">myLegoDB</span></a
     >
     <button
       class="navbar-toggler"
@@ -23,12 +23,16 @@
 
     <div class="collapse navbar-collapse" id="navbarContent">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link" href="/browse">Browse</a></li>
-        <li class="nav-item"><a class="nav-link" href="/sets">Sets</a></li>
+        <li class="nav-item">
+          <a class="nav-link text-secondary" href="/browse">Browse</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-secondary" href="/sets">Sets</a>
+        </li>
         {% if loggedIn %}
         <li class="nav-item dropdown">
           <a
-            class="nav-link dropdown-toggle"
+            class="nav-link dropdown-toggle text-secondary"
             href="#"
             id="pricingDropdown"
             role="button"
@@ -37,8 +41,14 @@
             >Profile</a
           >
           <ul class="dropdown-menu" aria-labelledby="pricingDropdown">
-            <li><a class="dropdown-item" href="/profile">Profile</a></li>
-            <li><a class="dropdown-item" href="/addset">Add Set</a></li>
+            <li>
+              <a class="dropdown-item text-secondary" href="/profile"
+                >Profile</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item text-secondary" href="/addset">Add Set</a>
+            </li>
             <li><hr class="dropdown-divider" /></li>
             <li>
               <a class="dropdown-item text-danger" href="/logout">Logout</a>

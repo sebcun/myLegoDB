@@ -1,8 +1,115 @@
-{% extends "base.html" %}{% block content %}
-<div class="container mt-5">
-  <h1>Welcome to myLegoDB</h1>
-  <p>This is the home page content.</p>
-  <!-- Add your specific content here -->
+{% extends "base.html" %}{% block content %} {# Hero #}
+<div class="container px-4 pt-5 my-5 text-center">
+  <h1 class="display-4 fw-bold text-body-emphasis text-primary">myLegoDB</h1>
+  <div class="col-lg-6 mx-auto">
+    <p class="lead mb-4">
+      Share your LEGO creations with the world! Snap photos of your sets, upload
+      them to myLegoDB, and let others explore and get inspired by your builds.
+    </p>
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+      <a
+        type="button"
+        class="btn btn-lego-red btn-lg px-4 me-sm-3"
+        href="/register/username"
+        >Register</a
+      >
+      <a
+        type="button"
+        class="btn btn-lego-blue btn-lg px-4"
+        href="/register/username"
+        >Login</a
+      >
+    </div>
+  </div>
+  <div class="overflow-hidden" style="max-height: 30vh">
+    <div class="container px-5">
+      <img
+        src="https://lego.bricksmegastore.com/cdn/shop/files/31212_Feature2.jpg?v=1715657863&width=600"
+        class="img-fluid border rounded-3 shadow-lg mb-4"
+        alt="Example image"
+        width="700"
+        height="500"
+        loading="lazy"
+      />
+    </div>
+  </div>
 </div>
+{# Features #}
+<div class="container px-4 py-5">
+  <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+    <div class="col d-flex align-items-start">
+      <i
+        class="text-primary bi bi-camera fs-4 text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center flex-shrink-0 me-3 p-2 rounded"
+      ></i>
 
+      <div>
+        <h3 class="fs-2 text-body-emphasis text-primary">Upload Your Sets</h3>
+        <p>
+          Quickly take photos of your LEGO sets and share them with the
+          community. Keep your collection organized and showcase your favorite
+          builds.
+        </p>
+      </div>
+    </div>
+    <div class="col d-flex align-items-start">
+      <i
+        class="text-primary bi bi-collection fs-4 text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center flex-shrink-0 me-3 p-2 rounded"
+      ></i>
+
+      <div>
+        <h3 class="fs-2 text-body-emphasis text-primary">
+          Browse the Collection
+        </h3>
+        <p>
+          Explore other users’ official LEGO sets. Discover rare pieces,
+          complete sets, and creative arrangements from fellow LEGO fans.
+        </p>
+      </div>
+    </div>
+    <div class="col d-flex align-items-start">
+      <i
+        class="text-primary bi bi-tools fs-4 text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center flex-shrink-0 me-3 p-2 rounded"
+      ></i>
+
+      <div>
+        <h3 class="fs-2 text-body-emphasis text-primary">
+          Engage with Builders
+        </h3>
+        <p>
+          Connect with other LEGO enthusiasts. Like and favourite sets to share
+          your passion for LEGO.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{# Footer #}
+<div class="container">
+  <footer
+    class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top"
+  >
+    <p class="col-md-4 mb-0 text-body-secondary">&copy; 2025 myLegoDB</p>
+    <a
+      href="/"
+      class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"
+      aria-label="Bootstrap"
+    >
+      <img
+        src="{{ url_for('static', filename='Logo.png') }}"
+        alt="Logo"
+        width="40"
+        height="32"
+        class="me-2"
+      />
+    </a>
+
+    <ul class="nav col-md-4 justify-content-end">
+      <li class="nav-item">
+        <a href="#" class="nav-link px-2 text-body-secondary"
+          ><i class="bi bi-github"></i
+        ></a>
+      </li>
+    </ul>
+  </footer>
+</div>
 {% endblock %}

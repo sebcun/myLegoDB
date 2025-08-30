@@ -16,7 +16,17 @@ async function createCard(upload, author) {
   col.className = "col-lg-3 col-md-4 col-sm-6 col-12 mb-3";
 
   const card = document.createElement("div");
-  card.className = "card";
+  card.className = "card border-0 shadow";
+
+  const cardDate = document.createElement("div");
+  cardDate.className = "card-date p-1";
+  const createdDate = new Date(upload.created_at);
+  const formattedDate = createdDate.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+  cardDate.textContent = `Posted on ${formattedDate}`;
 
   const img = document.createElement("img");
   img.src = `/static/uploads/${upload.image}`;
@@ -24,12 +34,18 @@ async function createCard(upload, author) {
   img.className = "card-img-top";
   img.style.height = "130px";
   img.style.objectFit = "cover";
+  img.style.cursor = "pointer";
+  img.setAttribute("data-bs-toggle", "modal");
+  img.setAttribute(
+    "data-bs-target",
+    `#imageModal-${upload.image.replace(/[^a-zA-Z0-9]/g, "")}`
+  );
 
   const cardBody = document.createElement("div");
   cardBody.className = "card-body p-2";
 
   const title = document.createElement("h5");
-  title.className = "card-title mb-1";
+  title.className = "card-title mb-1 text-primary";
   title.textContent = setsMap[upload.setid] || upload.setid;
 
   const link = document.createElement("a");
@@ -51,13 +67,51 @@ async function createCard(upload, author) {
     link.appendChild(info);
   }
 
+  const modal = document.createElement("div");
+  modal.className = "modal fade";
+  modal.id = `imageModal-${upload.image.replace(/[^a-zA-Z0-9]/g, "")}`;
+  modal.setAttribute("tabindex", "-1");
+  modal.setAttribute("aria-labelledby", "imageModalLabel");
+  modal.setAttribute("aria-hidden", "true");
+
+  const modalDialog = document.createElement("div");
+  modalDialog.className = "modal-dialog modal-dialog-centered modal-lg";
+
+  const modalContent = document.createElement("div");
+  modalContent.className = "modal-content";
+
+  const modalBody = document.createElement("div");
+  modalBody.className = "modal-body p-0";
+
+  const modalImg = document.createElement("img");
+  modalImg.src = `/static/uploads/${upload.image}`;
+  modalImg.className = "img-fluid w-100";
+
+  const modalFooter = document.createElement("div");
+  modalFooter.className = "modal-footer";
+
+  const closeBtn = document.createElement("button");
+  closeBtn.type = "button";
+  closeBtn.className = "btn btn-secondary btn-sm";
+  closeBtn.setAttribute("data-bs-dismiss", "modal");
+  closeBtn.textContent = "Close";
+
+  modalFooter.appendChild(closeBtn);
+  modalBody.appendChild(modalImg);
+  modalContent.appendChild(modalBody);
+  modalContent.appendChild(modalFooter);
+  modalDialog.appendChild(modalContent);
+  modal.appendChild(modalDialog);
+
+  card.appendChild(cardDate);
+  card.appendChild(img);
   cardBody.appendChild(title);
   if (author) {
     cardBody.appendChild(link);
   }
-  card.appendChild(img);
   card.appendChild(cardBody);
   col.appendChild(card);
+  col.appendChild(modal);
 
   return col;
 }

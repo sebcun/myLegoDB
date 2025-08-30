@@ -28,9 +28,9 @@ def index():
     return render_template('index.html')
 
 # Index Route
-@app.route('/home')
-def home():
-    return render_template('home.html')
+@app.route('/browse')
+def browse():
+    return render_template('browse.html')
 
 # Profile Route
 @app.route('/profile')

@@ -1,7 +1,21 @@
 body {
   background-color: #fafbfc;
+  color: #475569 !important;
 }
 
+.text-primary {
+  color: #1e293b !important;
+}
+.text-secondary {
+  color: #475569 !important;
+}
+.text-muted {
+  color: #64748b !important;
+}
+
+a.text-secondary:hover {
+  color: #2c2f33 !important;
+}
 /* Navbar */
 .bg-light {
   background-color: #f8fafc !important;
@@ -56,4 +70,31 @@ body {
   border-color: #1e40af;
   opacity: 0.65;
   cursor: not-allowed;
+}
+
+/* Card Hover */
+.card {
+  transition: transform 0.2s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: scale(1.06);
+}
+
+.card-date {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  padding: 0.5rem 0;
+  background-color: #f8fafc;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+}
+
+.card:hover .card-date {
+  transform: translateY(0);
 }
