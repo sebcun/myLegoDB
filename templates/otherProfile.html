@@ -96,7 +96,7 @@
           document.getElementById(
             "profileUsername"
           ).textContent = `${data.user.username}'s Profile`;
-          fetch(`/api/getuploads?author=${userID}`, {
+          fetch(`/api/uploads?author=${userID}`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",

@@ -202,7 +202,7 @@ def loginPassword():
 
 # API ROUTES
 # Get Recent Set Uploads
-@app.route('/api/getuploads')
+@app.route('/api/uploads')
 def getUploads():
     db = getDb()
 
@@ -310,6 +310,28 @@ def getUser():
         if not user:
             return jsonify({"error": "User not found."}), 404
         return jsonify({"success": True, "user": dict(user)}), 200
+    
+@app.route('/api/sets')
+def getSets():
+    db = getDb()
+
+    # API Query Parameters
+    limit = request.args.get('limit', default=10, type=int)
+
+    # Validate Parameters
+    if limit < 1:
+        limit = 10
+    
+    # Query
+    query = "SELECT setid, COUNT(*) as upload_count FROM uploads GROUP BY setid ORDER BY upload_count DESC LIMIT ?"
+    sets = db.execute(query, (limit,)).fetchall()
+    result = [dict(row) for row in sets]
+
+    return jsonify({
+        "success": True,
+        "sets": result,
+        "limit": limit
+    }), 200
     
 
 

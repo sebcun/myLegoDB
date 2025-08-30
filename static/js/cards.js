@@ -1,4 +1,6 @@
 let setsMap = {};
+let imagesMap = {};
+
 fetch("/static/sets.csv")
   .then((res) => res.text())
   .then((csv) => {
@@ -7,6 +9,7 @@ fetch("/static/sets.csv")
       const cols = lines[i].split(",");
       if (cols.length > 1) {
         setsMap[cols[0]] = cols[1];
+        imagesMap[cols[0]] = cols[5];
       }
     }
   });

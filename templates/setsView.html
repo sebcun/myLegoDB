@@ -46,7 +46,7 @@
   if (!setid) {
     window.location.href = "/notfound";
   } else {
-    fetch(`/api/getuploads?set=${setid}`, {
+    fetch(`/api/uploads?set=${setid}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
