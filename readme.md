@@ -73,7 +73,7 @@ The application will be available at [http://localhost:5000](http://localhost:50
 
 This application provides several API endpoints available for you to use. All endpoints return JSON responses.
 
-### [/api/uploads](http://localhost:5000/api/uploads)
+### GET [/api/uploads](http://localhost:5000/api/uploads)
 
 Retrieves a list of uploads with optional filtering and pagination.
 
@@ -111,5 +111,117 @@ GET /api/uploads?limit=10&sort=random
   "total": 20,
   "page": 1,
   "per_page": 20
+}
+```
+
+### GET [/api/user](http://localhost:5000/api/user)
+
+Retrieves user information.
+
+#### Query Parameters
+
+If no `id` or `username` is set, it will default to the current authenticated user.
+
+- `id` (int, optional): User ID
+- `username` (str, optional): Username
+
+#### Example Usage
+
+```
+GET /api/user?id=123
+```
+
+#### Response
+
+```json
+{
+  "id": 123,
+  "username": "0923",
+  "display": "sebcun",
+  "avatar": "path/to/avatar.png"
+}
+```
+
+### GET [/api/sets](http://localhost:5000/api/sets)
+
+Retrieves popular sets based on upload count.
+
+#### Query Parameters
+
+- `limit` (int, default: 10): Maximum number of sets to return
+
+#### Example Usage
+
+```
+GET /api/sets?limit=5
+```
+
+#### Response
+
+```json
+{
+  "sets": [
+    {
+      "setid": "10251-1",
+      "upload_count": 15
+    }
+  ]
+}
+```
+
+### GET/POST [/api/like/<uploadid>](http://localhost:5000/api/like/<uploadid>)
+
+Like or unlike an upload. Requires authentication.
+
+#### Example Usage
+
+```
+POST /api/like/456
+```
+
+#### Response
+
+```json
+{
+  "liked": true,
+  "likes_count": 6
+}
+```
+
+### GET/POST [/api/favouriteset/<uploadid>](http://localhost:5000/api/favouriteset/<uploadid>)
+
+Favorite or unfavorite a set. Requires authentication.
+
+#### Example Usage
+
+```
+POST /api/favouriteset/10251-1
+```
+
+#### Response
+
+```json
+{
+  "favourited": true,
+  "favourite_count": 1
+}
+```
+
+### GET/POST [/api/follow/<followedid>](http://localhost:5000/api/follow/<followedid>)
+
+Follow or unfollow a user. Requires authentication.
+
+#### Example Usage
+
+```
+POST /api/follow/789
+```
+
+#### Response
+
+```json
+{
+  "following": true,
+  "followers_count": 11
 }
 ```
