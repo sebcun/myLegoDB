@@ -187,4 +187,6 @@ database.db
 
 # Uploads
 ./static/uploads/*
-./azure/*
+./.azure/*
+./.azure/config
+.azure/config

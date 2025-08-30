@@ -7,6 +7,8 @@ myLegoDB is a website built with Flask that allows users to share LEGO sets they
 
 This project was created for the [Hackclub](https://hackclub.com/) YSWS, [Authly](https://authly.hackclub.com/). A challenge where the goal was to create a unique and fun authentication system. For me, this was to create a LEGO minifigure builder for users, and a "Build Your Password" where you place bricks of different sizes and colours on a grid for your password.
 
+![Demo Video](https://github.com/sebcun/myLegoDB/raw/refs/heads/main/demo.mp4)
+
 ## Features
 
 - User registration and authentication
