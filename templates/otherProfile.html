@@ -18,7 +18,7 @@
   <body>
     {% include 'navbar.html' %}
     <div class="container mt-5">
-      <h1><span id="profileUsername">Loading...</span>'s Profile</h1>
+      <h1><span id="profileUsername">Loading...</span></h1>
       <div class="mb-3">
         <label for="setSearch" class="form-label"
           >Search Sets (By ID or Name)</label
@@ -119,8 +119,9 @@
           .then((data) => {
             if (data.success) {
               userID = data.user.id;
-              document.getElementById("profileUsername").textContent =
-                data.user.username;
+              document.getElementById(
+                "profileUsername"
+              ).textContent = `${data.user.username}'s Profile`;
               fetch(`/api/getuploads?author=${userID}`, {
                 method: "GET",
                 headers: {
