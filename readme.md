@@ -7,8 +7,6 @@ myLegoDB is a website built with Flask that allows users to share LEGO sets they
 
 This project was created for the [Hackclub](https://hackclub.com/) YSWS, [Authly](https://authly.hackclub.com/). A challenge where the goal was to create a unique and fun authentication system. For me, this was to create a LEGO minifigure builder for users, and a "Build Your Password" where you place bricks of different sizes and colours on a grid for your password.
 
-![Demo Video](https://github.com/sebcun/myLegoDB/raw/refs/heads/main/demo.mp4)
-
 ## Features
 
 - User registration and authentication
@@ -21,7 +19,7 @@ This project was created for the [Hackclub](https://hackclub.com/) YSWS, [Authly
 
 ## Demo
 
-<video src="https://github.com/sebcun/myLegoDB/raw/refs/heads/main/demo.mp4" controls width="640" height="360">
+<video src="https://cdn-cf-east.streamable.com/video/mp4/wpan2w.mp4?Expires=1756809600&Signature=eZoa1cOEZCPkN0p4iHb4syXChMCi1PR-lysIQMishPZK9UBu7YsmPzevTBlLOfbXhDTuxryOSUOFSb58CvgSd2nr2OZZ6jzjf4fd0flr9INP0UpRxOq6Nyk8J~Imv0HBJX50jLiQxRi1Ztxc1WsokeuGJm6Ql1UcJ3TNAB2JsMUxZB3IEyOlDCRtdguzuzR-IUOdC5GgyGaNW7x7nVgDHMMZcAc0NOwibxK0uCTOKgKVDEx8izgsWCrexsHn2R5PGDh9CKfkDUrFFOyc3XHrXrNSbMUDJ8AI~IEQc0-m7zjrkHBfGI1SzR0Mjfh~T7pA-XXJRhEmLMN-3Cg86uNp-Q__&Key-Pair-Id=APKAIEYUVEN4EVB2OKEQ" controls width="640" height="360">
   Your browser does not support the video tag.
 </video>
 
