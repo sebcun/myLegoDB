@@ -1,46 +1,42 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/">
-      <img
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" href="/"
+      ><img
+        class="bi me-2"
+        width="40"
+        height="40"
+        aria-hidden="true"
         src="{{ url_for('static', filename='Logo.png') }}"
-        alt="Logo"
-        width="30"
-        height="24"
-        class="d-inline-block align-text-top"
-      />myLegoDB
-    </a>
+      /><span class="fs-4">myLegoDB</span></a
+    >
     <button
       class="navbar-toggler"
       type="button"
       data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
+      data-bs-target="#navbarContent"
+      aria-controls="navbarContent"
       aria-expanded="false"
       aria-label="Toggle navigation"
     >
-      <span class="navbar-toggler-icon"></span>
+      <span class="navbar-toggle-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/sets">Sets</a>
-        </li>
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="/browse">Browse</a></li>
+        <li class="nav-item"><a class="nav-link" href="/sets">Sets</a></li>
         {% if loggedIn %}
         <li class="nav-item dropdown">
           <a
             class="nav-link dropdown-toggle"
             href="#"
+            id="pricingDropdown"
             role="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
+            >Profile</a
           >
-            Profile
-          </a>
-          <ul class="dropdown-menu">
+          <ul class="dropdown-menu" aria-labelledby="pricingDropdown">
             <li><a class="dropdown-item" href="/profile">Profile</a></li>
             <li><a class="dropdown-item" href="/addset">Add Set</a></li>
             <li><hr class="dropdown-divider" /></li>
@@ -49,20 +45,17 @@
             </li>
           </ul>
         </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="btn btn-lego-red me-2" href="/register/username"
+            >Register</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-lego-blue" href="/login/username">Login</a>
+        </li>
         {% endif %}
       </ul>
-      {% if not loggedIn %}
-      <div class="d-flex" role="search">
-        <a class="btn btn-outline-primary me-2" href="/register/username"
-          >Register</a
-        >
-        <a class="btn btn-outline-info" href="/login/username">Login</a>
-      </div>
-      {% else %}
-      <div class="d-flex" role="search">
-        <a class="btn btn-outline-info" href="/home">Home</a>
-      </div>
-      {% endif %}
     </div>
   </div>
 </nav>

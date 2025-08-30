@@ -1,0 +1,59 @@
+body {
+  background-color: #fafbfc;
+}
+
+/* Navbar */
+.bg-light {
+  background-color: #f8fafc !important;
+}
+
+/* Btn Red */
+.btn-lego-red {
+  background-color: #e74c3c;
+  color: #fff;
+  border: 1px solid #e74c3c;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+.btn-lego-red:hover,
+.btn-lego-red:focus {
+  background-color: #c0392b;
+  border-color: #c0392b;
+  color: #fff;
+}
+.btn-lego-red:active {
+  background-color: #a93226;
+  border-color: #a93226;
+}
+.btn-lego-red:disabled {
+  background-color: #e74c3c;
+  border-color: #e74c3c;
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Btn Blue */
+.btn-lego-blue {
+  background-color: #1e40af;
+  color: #fff;
+  border: 1px solid #1e40af;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.btn-lego-blue:hover,
+.btn-lego-blue:focus {
+  background-color: #1b35a0;
+  border-color: #1b35a0;
+  color: #fff;
+}
+
+.btn-lego-blue:active {
+  background-color: #162d8c;
+  border-color: #162d8c;
+}
+
+.btn-lego-blue:disabled {
+  background-color: #1e40af;
+  border-color: #1e40af;
+  opacity: 0.65;
+  cursor: not-allowed;
+}
