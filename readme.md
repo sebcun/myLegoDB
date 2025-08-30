@@ -17,6 +17,10 @@ This project was created for the [Hackclub](https://hackclub.com/) YSWS, [Authly
 - User profiles with follower/following functionality
 - Like and favourite features for sets and uploads
 
+## Demo
+
+### You can also view a live version of the demo [here](https://mylegodb.sebcun.com).
+
 ## Stack
 
 ### Backend
@@ -225,3 +229,15 @@ POST /api/follow/789
   "followers_count": 11
 }
 ```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Issues
+
+If you run into any issues or need support, please open an issue on the repository.
+
+## License
+
+This project is licensed under the MIT License - see [LICENSE](https://github.com/sebcun/myLegoDB/blob/main/LICENSE) for details.
