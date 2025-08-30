@@ -38,4 +38,33 @@ This project was created for the [Hackclub](https://hackclub.com/) YSWS, [Authly
 ### Requirements
 
 - Python 3.11+
-- Requirements in `requirements.txt` (install using `pip install -r requirements.txt`)
+
+### Setup
+
+1. Clone the repository
+
+```bash
+git clone https://github.com/Catch-c/nsimon.git
+cd nsimon
+```
+
+2. Install dependencies
+
+```py
+pip install -r requirements.txt
+```
+
+3. Create a `.env` file in the root directory:
+
+```env
+SECRET_KEY=your-flask-secret-key
+DATABASE_FILE=database.db
+```
+
+4. Run the application
+
+```py
+python app.py
+```
+
+The application will be available at [http://localhost:5000](http://localhost:5000)
