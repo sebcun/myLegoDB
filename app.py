@@ -17,6 +17,11 @@ app.teardown_appcontext(closeDb)
 def injectUser():
     return {'loggedIn': 'userID' in session}
 
+# 404
+@app.errorhandler(404)
+def pageNotFound(e):
+    return render_template('404.html'), 404
+
 # Index Route
 @app.route('/')
 def home():

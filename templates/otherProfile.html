@@ -80,7 +80,7 @@
       const pathSegments = window.location.pathname.split("/");
       const userid = pathSegments[pathSegments.length - 1];
       if (!userid || isNaN(userid)) {
-        alert("Invalid");
+        window.location.href = "/notfound";
       } else {
         fetch(`/api/user?id=${userid}`, {
           method: "GET",
@@ -106,6 +106,8 @@
                   await displayUploads(uploads);
                 })
                 .catch((err) => console.error("Fetch error:", err));
+            } else {
+              window.location.href = "/notfound";
             }
           });
       }

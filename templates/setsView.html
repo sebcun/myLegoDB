@@ -34,7 +34,7 @@
       const pathSegments = window.location.pathname.split("/");
       const setid = pathSegments[pathSegments.length - 1];
       if (!setid) {
-        alert("Invalid");
+        window.location.href = "/notfound";
       } else {
         fetch(`/api/getuploads?set=${setid}`, {
           method: "GET",
@@ -46,8 +46,10 @@
           .then(async (data) => {
             const row = document.getElementById("cards-row");
             row.innerHTML = "";
-            document.getElementById("setName").textContent =
-              setsMap[setid] || setid;
+            if (!setsMap[setid]) {
+              window.location.href = "/notfound";
+            }
+            document.getElementById("setName").textContent = setsMap[setid];
 
             for (let upload of data.uploads) {
               try {
