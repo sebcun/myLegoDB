@@ -36,7 +36,9 @@
 </div>
 {# Features #}
 <div class="container px-4 py-5">
-  <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+  <h1 class="mb-0 text-secondary text-center">Recently Posted by Our Users</h1>
+  <div class="row g-4 py-5 row-cols-1 row-cols-lg-3" id="cards-row">
+    {#
     <div class="col d-flex align-items-start">
       <i
         class="text-primary bi bi-camera fs-4 text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center flex-shrink-0 me-3 p-2 rounded"
@@ -81,6 +83,7 @@
         </p>
       </div>
     </div>
+    #}
   </div>
 </div>
 {# Footer #}
@@ -112,4 +115,41 @@
     </ul>
   </footer>
 </div>
+{% endblock %} {% block scripts %}
+<script src="{{ url_for('static', filename='js/cards.js') }}"></script>
+
+<script>
+  fetch(`/api/uploads?per_page=8`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => res.json())
+    .then(async (data) => {
+      const row = document.getElementById("cards-row");
+      row.innerHTML = "";
+
+      for (let upload of data.uploads) {
+        try {
+          const userResponse = await fetch(`/api/user?id=${upload.author}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          const userData = await userResponse.json();
+          const author = userData.success ? userData.user : null;
+
+          const card = await createCard(upload, author);
+          row.appendChild(card);
+        } catch (err) {
+          console.error("Author fetch or card creation error:", err);
+        }
+      }
+      document.getElementById("cards-row").classList.remove("d-none");
+      document.getElementById("loading-row").classList.add("d-none");
+    })
+    .catch((err) => console.error("Fetch error:", err));
+</script>
 {% endblock %}

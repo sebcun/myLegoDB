@@ -70,7 +70,7 @@
 <script src="{{ url_for('static', filename='js/cards.js') }}"></script>
 
 <script>
-  fetch(`/api/uploads`, {
+  fetch(`/api/uploads?per_page=8`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -103,7 +103,7 @@
     })
     .catch((err) => console.error("Fetch error:", err));
 
-  fetch(`/api/sets`, {
+  fetch(`/api/sets?limit=8`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
