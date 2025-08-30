@@ -141,7 +141,7 @@
           const userData = await userResponse.json();
           const author = userData.success ? userData.user : null;
 
-          const card = await (upload, author);
+          const card = await createCard(upload, author, null);
           row.appendChild(card);
         } catch (err) {
           console.error("Author fetch or card creation error:", err);

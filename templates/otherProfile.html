@@ -112,9 +112,9 @@
       .then((data) => {
         if (data.success) {
           userID = data.user.id;
-          document.getElementById(
-            "profileUsername"
-          ).textContent = `${data.user.display}'s`;
+          document.getElementById("profileUsername").textContent = `${
+            data.user.display || userID
+          }'s`;
           fetch(`/api/uploads?author=${userID}`, {
             method: "GET",
             headers: {

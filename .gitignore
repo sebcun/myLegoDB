@@ -186,4 +186,4 @@ cython_debug/
 database.db
 
 # Uploads
-./static/uploads
+./static/uploads/*

@@ -32,7 +32,9 @@ def index():
 # Index Route
 @app.route('/browse')
 def browse():
-    return render_template('browse.html')
+    if "userID" in session:
+        return render_template('browse.html')
+    return redirect(url_for('index'))
 
 # Profile Route
 @app.route('/profile')
