@@ -1,6 +1,6 @@
 {% extends "base.html" %}{% block content %}
 <div class="container mt-5">
-  <h2 class="mb-4 text-primary">Add a LEGO Set</h2>
+  <h2 class="mb-4 text-primary">Add a LEGO Set To Your Collection</h2>
   <form
     id="addSetForm"
     action="/addset"
@@ -41,7 +41,7 @@
         accept="image/*"
       />
     </div>
-    <button type="submit" class="btn btn-primary" id="submitBtn" disabled>
+    <button type="submit" class="btn btn-lego-blue" id="submitBtn" disabled>
       Submit Set
     </button>
   </form>
@@ -118,8 +118,11 @@
     document.getElementById("selectedSet").value = set.set_num;
     document.getElementById("suggestions").style.display = "none";
     document.getElementById("imageUploadDiv").style.display = "block";
-    document.getElementById("submitBtn").disabled = false;
   }
+
+  document.getElementById("image").addEventListener("change", function (event) {
+    document.getElementById("submitBtn").disabled = false;
+  });
 
   document.addEventListener("click", function (event) {
     const searchInput = document.getElementById("setSearch");
