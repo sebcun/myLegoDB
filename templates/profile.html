@@ -2,7 +2,7 @@
 <div class="container mt-5">
   <h1 class="text-primary">
     <span id="profileUsername" class="fw-bold">Your</span>
-    <span class="text-secondary">Posted Sets</span>
+    <span class="text-secondary">Collection</span>
   </h1>
   <div class="mb-3">
     <label for="setSearch" class="form-label text-secondary"
@@ -53,10 +53,20 @@
   async function displayUploads(filteredUploads) {
     const row = document.getElementById("cards-row");
     row.innerHTML = "";
-    for (let upload of filteredUploads) {
-      const card = await createCard(upload, null);
-      row.appendChild(card);
-    }
+    fetch(`/api/user`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then(async (userData) => {
+        for (let upload of filteredUploads) {
+          const card = await createCard(upload, null, userData?.user?.id);
+          row.appendChild(card);
+        }
+      });
+
     document.getElementById("cards-row").classList.remove("d-none");
     document.getElementById("loading-row").classList.add("d-none");
   }

@@ -14,7 +14,7 @@ fetch("/static/sets.csv")
     }
   });
 
-async function createCard(upload, author) {
+async function createCard(upload, author, currentUserId) {
   const col = document.createElement("div");
   col.className = "col-lg-3 col-md-4 col-sm-6 col-12 mb-3";
 
@@ -91,13 +91,56 @@ async function createCard(upload, author) {
   modalImg.className = "img-fluid w-100";
 
   const modalFooter = document.createElement("div");
-  modalFooter.className = "modal-footer";
+  modalFooter.className =
+    "modal-footer d-flex justify-content-between align-items-center";
+
+  const likeBtn = document.createElement("button");
+  likeBtn.type = "button";
+  likeBtn.className = "btn btn-outline-danger btn-sm";
+  likeBtn.innerHTML = `<i class="bi bi-heart-fill"></i>
+${upload.like_count}`;
+  if (upload.is_liked) {
+    likeBtn.classList.add("btn-danger");
+    likeBtn.classList.remove("btn-outline-danger");
+  }
+
+  if (currentUserId) {
+    likeBtn.addEventListener("click", async () => {
+      try {
+        const response = await fetch(`/api/like/${upload.id}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        });
+        const data = await response.json();
+        if (data.success) {
+          upload.like_count = data.like_count;
+          upload.is_liked = data.liked;
+          likeBtn.innerHTML = `<i class="bi bi-heart-fill"></i>
+ ${data.like_count}`;
+          if (upload.is_liked) {
+            likeBtn.classList.add("btn-danger");
+            likeBtn.classList.remove("btn-outline-danger");
+          } else {
+            likeBtn.classList.remove("btn-danger");
+            likeBtn.classList.add("btn-outline-danger");
+          }
+        }
+      } catch (error) {
+        console.error("error toggling like:", error);
+      }
+    });
+  } else {
+    likeBtn.disabled = true;
+    likeBtn.title = "Log in to like";
+  }
 
   const closeBtn = document.createElement("button");
   closeBtn.type = "button";
   closeBtn.className = "btn btn-secondary btn-sm";
   closeBtn.setAttribute("data-bs-dismiss", "modal");
   closeBtn.textContent = "Close";
+
+  modalFooter.appendChild(likeBtn);
 
   modalFooter.appendChild(closeBtn);
   modalBody.appendChild(modalImg);

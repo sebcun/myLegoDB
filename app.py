@@ -284,7 +284,23 @@ def getUploads():
 
     # Complete Query
     uploads = db.execute(query, params).fetchall()
-    result = [dict(row) for row in uploads]
+    result = []
+    userid = session.get('userID')
+
+    for row in uploads:
+        uploadDict = dict(row)
+        uploadid = uploadDict['id']
+
+        likeCount = db.execute('SELECT COUNT(*) FROM likes WHERE uploadid = ?', (uploadid,)).fetchone()[0]
+        uploadDict['like_count'] = likeCount
+
+        if userid:
+            isLiked = db.execute('SELECT 1 FROM likes WHERE userid = ? AND uploadid = ?', (userid, uploadid)).fetchone() is not None
+            uploadDict['is_liked'] = isLiked
+        else:
+            uploadDict['is_liked'] = False
+        result.append(uploadDict)
+
     return jsonify({
         "success": True,
         "uploads": result,
@@ -357,6 +373,34 @@ def getSets():
         "sets": result,
         "limit": limit
     }), 200
+
+@app.route('/api/like/<uploadid>', methods=["POST", "GET"])
+def handleLike(uploadid):
+    if 'userID' not in session:
+        return jsonify({'error': 'Not logged in.'}), 401
+    
+    userid = session['userID']
+
+    db = getDb()
+
+    if request.method == 'POST':
+        existingLike = db.execute('SELECT id FROM likes WHERE userid = ? and uploadid = ?', (userid, uploadid)).fetchone()
+        if existingLike:
+            db.execute('DELETE FROM likes WHERE id = ?', (existingLike['id'],))
+            db.commit()
+            liked = False
+        else:
+            db.execute('INSERT INTO likes (userid, uploadid) VALUES (?, ?)', (userid, uploadid))
+            db.commit()
+            liked = True
+        
+        likeCount = db.execute('SELECT COUNT(*) FROM likes WHERE uploadid = ?', (uploadid,)).fetchone()[0]
+
+        return jsonify({'success': True, 'liked': liked, 'like_count': likeCount}), 200
+    else:
+        liked = db.execute('SELECT 1 FROM likes WHERE userid = ? AND uploadid = ?', (userid, uploadid)).fetchone()
+        likeCount = db.execute('SELECT COUNT(*) FROM likes WHERE uploadid = ?', (uploadid,)).fetchone()[0]
+        return jsonify({'liked': liked, 'like_count': likeCount}), 200
     
 
 
