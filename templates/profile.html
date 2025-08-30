@@ -20,6 +20,18 @@
 
     <div class="container mt-5">
       <h1>Your Profile</h1>
+      <div class="mb-3">
+        <label for="setSearch" class="form-label"
+          >Search Your Sets (By ID or Name)</label
+        >
+        <input
+          type="text"
+          class="form-control"
+          id="setSearch"
+          placeholder="Start typing to search your sets..."
+          autocomplete="off"
+        />
+      </div>
       <div class="row" id="cards-row"></div>
     </div>
 
@@ -33,6 +45,38 @@
 
     <script>
       let userID = null;
+      let uploads = [];
+
+      async function displayUploads(filteredUploads) {
+        const row = document.getElementById("cards-row");
+        row.innerHTML = "";
+        for (let upload of filteredUploads) {
+          const card = await createCard(upload, null);
+          row.appendChild(card);
+        }
+      }
+
+      document
+        .getElementById("setSearch")
+        .addEventListener("input", function () {
+          const query = this.value.toLowerCase().trim();
+          const row = document.getElementById("cards-row");
+
+          if (query.length < 2) {
+            displayUploads(uploads);
+            return;
+          }
+
+          const filtered = uploads.filter((upload) => {
+            const setName = setsMap[upload.setid] || "";
+            return (
+              upload.setid.toLowerCase().includes(query) ||
+              setName.toLowerCase().includes(query)
+            );
+          });
+
+          displayUploads(filtered);
+        });
 
       fetch("/api/user", {
         method: "GET",
@@ -52,13 +96,8 @@
             })
               .then((res) => res.json())
               .then(async (data) => {
-                const row = document.getElementById("cards-row");
-                row.innerHTML = "";
-
-                for (let upload of data.uploads) {
-                  const card = await createCard(upload, null);
-                  row.appendChild(card);
-                }
+                uploads = data.uploads;
+                await displayUploads(uploads);
               })
               .catch((err) => console.error("Fetch error:", err));
           }
