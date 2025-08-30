@@ -1,7 +1,9 @@
-import sqlite3
+import sqlite3, os
 from flask import g
+from dotenv import load_dotenv
 
-DATABASE = 'database.db'
+load_dotenv()
+DATABASE = os.getenv("DATABASE_FILE", "database.db")
 
 def getDb():
     if 'db' not in g:

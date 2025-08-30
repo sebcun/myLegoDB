@@ -2,10 +2,14 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from database import getDb, closeDb, initDb
 import json, os, time, re
 from werkzeug.utils import secure_filename 
+from dotenv import load_dotenv
 
 # Init App
 app = Flask(__name__)
-app.secret_key = "TEST"
+
+load_dotenv()
+SECRET_KEY = os.getenv("SECRET_KEY", "APPSecretKeyMyLegoDB")
+app.secret_key = SECRET_KEY
 app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'uploads')
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
